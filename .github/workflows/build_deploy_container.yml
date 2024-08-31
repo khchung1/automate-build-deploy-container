@@ -34,7 +34,7 @@ jobs:
 
     - name: Create ECR repo if necessary
       id: create-repo
-      uses: @2iq/aws-ecr-create-repository@v1
+      uses: 2iq/aws-ecr-create-repository@v1
       with:
         ecr-name: my-custom-ecr-repo-name
       # run: |
@@ -46,8 +46,7 @@ jobs:
       env:
         REPOSITORY_URI : ${{ steps.create-repo.outputs.repository-uri }}
         IMAGE_TAG :  ${{ github.sha }}
-      run: |   
-      
+      run: |       
         docker build -t $REPOSITORY_URI:$IMAGE_TAG .
         docker push $REPOSITORY_URI:$IMAGE_TAG
 
