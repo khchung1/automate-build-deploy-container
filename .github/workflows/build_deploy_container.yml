@@ -31,7 +31,8 @@ jobs:
       with:
         repository: hello-world
         public: true
-
+    
+    
       # run: |
       #   aws ecr create-repository --repository-name kh-ecr-repo \
       #     --query 'repository.repositoryUri' --output text > repository_uri.txt
