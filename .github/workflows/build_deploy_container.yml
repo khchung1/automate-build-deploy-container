@@ -25,18 +25,13 @@ jobs:
       id: login-ecr-public
       uses: aws-actions/amazon-ecr-login@v1
     
-    # - name: Create ECR repository
-    #   id: create-repo
-    #   uses: int128/create-ecr-repository-action@v1
-    #   with:
-    #     repository: hello-world
-    #     public: true
-
-    - name: Create ECR repo if necessary
+    - name: Create ECR repository
       id: create-repo
-      uses: 2iq/aws-ecr-create-repository@v1
+      uses: int128/create-ecr-repository-action@v1
       with:
-        ecr-name: my-custom-ecr-repo-name
+        repository: hello-world
+        public: true
+
       # run: |
       #   aws ecr create-repository --repository-name kh-ecr-repo \
       #     --query 'repository.repositoryUri' --output text > repository_uri.txt
