@@ -33,14 +33,10 @@ jobs:
       id: login-ecr-public
       uses: aws-actions/amazon-ecr-login@v1
     
-    - name: Login ECR Public
-      run: |
-        aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/u2q1a2y8
-
     - name: Create ECR repository
       id: create-ecr
       run: |
-        aws ecr-public create-repository --repository-name kh-ecr-repo \
+        aws ecr create-repository --repository-name kh-ecr-repo \
           --query 'repository.repositoryUri' --output text > repository_uri.txt
 
     - name: Build and push docker image to Amazon ECR Public
