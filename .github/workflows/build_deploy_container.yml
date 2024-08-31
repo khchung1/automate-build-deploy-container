@@ -35,35 +35,31 @@ jobs:
 
     - name: Create ECR repository
       id: create-ecr
-      # run: |
-      #   aws ecr create-repository --repository-name kh-ecr-repo \
-      #     --query 'repository.repositoryUri' --output text > repository_uri.txt
-      uses: int128/create-ecr-repository-action@v1
-      with:
-        repository: kh-ecr
-        public: true
+      run: |
+        aws ecr-public create-repository --repository-name kh-ecr-repo \
+          --query 'repository.repositoryUri' --output text > repository_uri.txt
 
     - name: Build, tag, and push docker image to Amazon ECR Public
-      env:
-        REPOSITORY_URI : ${{ steps.create-ecr.outputs.repository-uri }}
-        IMAGE_TAG : ${{ github.sha }}
+
       run: |    
-        docker build -t $REPOSITORY_URI:$IMAGE_TAG .
-        docker push $REPOSITORY_URI:$IMAGE_TAG
+          REPOSITORY_URI=$(cat repository_uri.txt)
+          IMAGE_TAG=${{ github.sha }}
+          docker build -t $REPOSITORY_URI:$IMAGE_TAG .
+          docker push $REPOSITORY_URI:$IMAGE_TAG
 
     # -name: Read Variable from a File #Store created repository_url to a terraform variable
     #   run: |
     #     echo "repo_uri_variable=$(cat repository_uri.txt)" >> $GITHUB_ENV
    
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
+    # - name: Setup Terraform
+    #   uses: hashicorp/setup-terraform@v2
 
-    - name: Terraform Init
-      run: terraform init
+    # - name: Terraform Init
+    #   run: terraform init
 
-    - name: Terraform Validate
-      run: terraform validate
+    # - name: Terraform Validate
+    #   run: terraform validate
 
-    - name: Terraform Plan
-      run: terraform plan
+    # - name: Terraform Plan
+    #   run: terraform plan
     
