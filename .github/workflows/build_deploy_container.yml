@@ -10,9 +10,8 @@ env:
 jobs:
   Deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
+    # permissions:
+    #   contents: read
     steps:
     - name: Checkout
       uses: actions/checkout@v3
