@@ -41,8 +41,9 @@ jobs:
       id: build-image
       env:
         REPOSITORY_URI : ${{ steps.create-repo.outputs.repository-uri }}
-        IMAGE_TAG : ${{ 01 }}
-      run: |    
+        IMAGE_TAG :  ${{ github.sha }}
+      run: |   
+        aws ecr-public get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin public.ecr.aws/u2q1a2y8 
         docker build -t $REPOSITORY_URI:$IMAGE_TAG .
         docker push $REPOSITORY_URI:$IMAGE_TAG
 
