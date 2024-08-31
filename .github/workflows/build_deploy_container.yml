@@ -36,6 +36,8 @@ jobs:
     - name: Create ECR repository
       id: create-ecr
       run: |
+        aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/u2q1a2y8
+      run: |
         aws ecr-public create-repository --repository-name kh-ecr-repo \
           --query 'repository.repositoryUri' --output text > repository_uri.txt
 
