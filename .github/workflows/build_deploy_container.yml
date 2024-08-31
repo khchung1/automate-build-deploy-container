@@ -40,9 +40,9 @@ jobs:
         registry-type: public
 
     - name: Create ECR repository
-        run: |
-          aws ecr create-repository --repository-name kh-ecr-repo \
-            --query 'repository.repositoryUri' --output text > repository_uri.txt
+      run: |
+        aws ecr create-repository --repository-name kh-ecr-repo \
+          --query 'repository.repositoryUri' --output text > repository_uri.txt
 
     - name: Build, tag, and push docker image to Amazon ECR Public
       run: |
