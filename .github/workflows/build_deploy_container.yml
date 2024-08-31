@@ -8,8 +8,8 @@ env:
   AWS_REGION: ap-southeast-1           
 
 jobs:
-  deploy:
-    -name: Deploy
+  cd:
+    name: Deploy
     runs-on: ubuntu-latest
     permissions:
       contents: read
