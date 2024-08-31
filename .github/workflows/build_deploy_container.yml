@@ -44,11 +44,12 @@ jobs:
         public: true
 
     - name: Build, tag, and push docker image to Amazon ECR Public
-      run: |
-        REPOSITORY_URI= ${{ steps.create-ecr.outputs.repository-uri }}
-        IMAGE_TAG=${{ github.sha }}
-        docker build -t $REPOSITORY_URI:01 .
-        docker push $REPOSITORY_URI:01
+      env:
+        REPOSITORY_URI : ${{ steps.create-ecr.outputs.repository-uri }}
+        IMAGE_TAG : ${{ github.sha }}
+      run: |    
+        docker build -t $REPOSITORY_URI:$IMAGE_TAG .
+        docker push $REPOSITORY_URI:$IMAGE_TAG
 
     # -name: Read Variable from a File #Store created repository_url to a terraform variable
     #   run: |
