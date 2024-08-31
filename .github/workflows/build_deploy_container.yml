@@ -34,7 +34,7 @@ jobs:
 
     - name: Create ECR repo if necessary
       id: create-repo
-      uses: @2iq/aws-ecr-create-repository@v1
+      uses: 2iq/aws-ecr-create-repository@v1
       with:
         ecr-name: my-custom-ecr-repo-name
       # run: |
