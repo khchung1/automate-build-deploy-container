@@ -8,10 +8,11 @@ env:
   AWS_REGION: ap-southeast-1           
 
 jobs:
-  Deploy:
+  deploy:
+    -name: Deploy
     runs-on: ubuntu-latest
-    # permissions:
-    #   contents: read
+    permissions:
+      contents: read
     steps:
     - name: Checkout
       uses: actions/checkout@v3
