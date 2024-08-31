@@ -40,7 +40,7 @@ jobs:
     - name: Build and push docker image to Amazon ECR Public
       id: build-image
       env:
-        REPOSITORY_URI : ${{ steps.crate-repo.outputs.repository-uri }}
+        REPOSITORY_URI : ${{ steps.create-repo.outputs.repository-uri }}
         IMAGE_TAG : ${{ 01 }}
       run: |    
         docker build -t $REPOSITORY_URI:$IMAGE_TAG .
