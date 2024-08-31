@@ -47,7 +47,7 @@ jobs:
       id: build-image
       env:
         REPOSITORY_URI : ${{ steps.crate-repo.outputs.repository-uri }}
-        IMAGE_TAG : latest
+        IMAGE_TAG : ${{ github.sha }}
       run: |    
         docker build -t $REPOSITORY_URI:$IMAGE_TAG .
         docker push $REPOSITORY_URI:$IMAGE_TAG
