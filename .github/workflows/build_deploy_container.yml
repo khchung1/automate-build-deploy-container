@@ -1,0 +1,69 @@
+name: Deploy to Amazon ECS
+
+on:
+  push:
+    branches: [ "main" ]   
+
+env:            
+  AWS_REGION: ap-southeast-1           
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4 # More information on this action can be found below in the 'AWS Credentials' section
+      with:
+        role-to-assume: arn:aws:iam::123456789012:role/my-github-actions-role
+        aws-region: aws-region-1
+
+    - name: Login to Amazon ECR Public
+      id: login-ecr-public
+      uses: aws-actions/amazon-ecr-login@v2
+      with:
+        registry-type: public
+
+    - name: Create ECR repository
+        run: |
+          aws ecr create-repository --repository-name kh-ecr-repo \
+            --query 'repository.repositoryUri' --output text > repository_uri.txt
+
+    - name: Build, tag, and push docker image to Amazon ECR Public
+      run: |
+        REPOSITORY_URI=$(cat repository_uri.txt)
+        IMAGE_TAG=${{ github.sha }}
+        docker build -t $REPOSITORY_URI:$IMAGE_TAG .
+        docker push $REPOSITORY_URI:$IMAGE_TAG
+
+    -name: Read Variable from a File #Store created repository_url to a terraform variable
+        run: |
+          echo "TF_VAR_repo_uri_variable=$(cat repository_uri.txt)" >> $GITHUB_ENV
+   
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+
+    - name: Terraform Init
+      run: terraform init
+
+    - name: Terraform Validate
+      run: terraform apply
+
+    - name: Terraform Plan
+      run: terraform plan
+    
