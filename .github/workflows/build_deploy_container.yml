@@ -39,8 +39,8 @@ jobs:
         aws ecr-public create-repository --repository-name kh-ecr-repo \
           --query 'repository.repositoryUri' --output text > repository_uri.txt
 
-    - name: Build, tag, and push docker image to Amazon ECR Public
-
+    - name: Build and push docker image to Amazon ECR Public
+      id: build-image
       run: |    
           REPOSITORY_URI=$(cat repository_uri.txt)
           IMAGE_TAG=${{ github.sha }}
