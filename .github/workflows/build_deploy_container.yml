@@ -8,7 +8,7 @@ env:
   AWS_REGION: ap-southeast-1        
 
 jobs:
-  CD:
+  deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -32,8 +32,6 @@ jobs:
     - name: Login to Amazon ECR Public
       id: login-ecr-public
       uses: aws-actions/amazon-ecr-login@v1
-      with:
-        registry-type: public
 
     # - name: Create ECR repository
     #   run: |
