@@ -38,10 +38,10 @@ jobs:
       # run: |
       #   aws ecr create-repository --repository-name kh-ecr-repo \
       #     --query 'repository.repositoryUri' --output text > repository_uri.txt
-      - uses: int128/create-ecr-repository-action@v1
-        with:
-          repository: kh-ecr
-          public: true
+      uses: int128/create-ecr-repository-action@v1
+      with:
+        repository: kh-ecr
+        public: true
 
     - name: Build, tag, and push docker image to Amazon ECR Public
       run: |
