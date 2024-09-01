@@ -42,11 +42,15 @@ jobs:
       id: get_task_definition
       run: |    
         aws ecs describe-task-definition --task-definition kh-service --query taskDefinition > task-definition.json
-        jq '.containerDefinitions[0].portMappings[0].hostPort = 9090' task-definition.json > modified-task-definition.json          
+        jq '.containerDefinitions[0].portMappings[0].hostPort = 9090' task-definition.json > modified-task-definition.json
+        echo "modified-task-definition=$(cat modified-task-definition.json)" >> $GITHUB_OUTPUT          
 
-    - name: Update task definition in ECS
-      id: update-task-definition
-      run: |
-        aws ecs register-task-definition --cli-input-json file://modified-task-definition.json
+    - name: Deploy to Amazon ECS
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+      with:
+        task-definition: modified-task-definition.json
+        service: kh2-service
+        cluster: kh2-cluster
+        wait-for-service-stability: true
 
 #
