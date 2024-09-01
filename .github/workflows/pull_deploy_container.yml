@@ -38,7 +38,7 @@ jobs:
     - name: Get existing task definition
       id: get_task_definition
       run: |
-        TASK_DEFINITION_JSON=$(aws ecs describe-task-definition --task-definition kh-service)
+        TASK_DEFINITION_JSON=$(aws ecs describe-task-definition --kh-service)
         echo "task_definition_json=$TASK_DEFINITION_JSON" >> $GITHUB_OUTPUT
 
     - name: Modify task definition port
