@@ -36,16 +36,16 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG 
   
     - name: Get existing task definition
-        id: get_task_definition
-        run: |
-          TASK_DEFINITION_JSON=$(aws ecs describe-task-definition --task-definition kh-service)
-          echo "task_definition_json=$TASK_DEFINITION_JSON" >> $GITHUB_OUTPUT
+      id: get_task_definition
+      run: |
+        TASK_DEFINITION_JSON=$(aws ecs describe-task-definition --task-definition kh-service)
+        echo "task_definition_json=$TASK_DEFINITION_JSON" >> $GITHUB_OUTPUT
 
     - name: Modify task definition port
-    id: modify-task-definition
-    run: |
-      echo "${{ steps.get_task_definition.outputs.task_definition_json }}" > task-definition.json
-      jq '.taskDefinition.containerDefinitions[0].portMappings[0].hostPort = 9090' task-definition.json > modified-task-definition.json
+      id: modify-task-definition
+      run: |
+        echo "${{ steps.get_task_definition.outputs.task_definition_json }}" > task-definition.json
+        jq '.taskDefinition.containerDefinitions[0].portMappings[0].hostPort = 9090' task-definition.json > modified-task-definition.json
 
     - name: Update task definition in ECS
       id: update-task-definition
