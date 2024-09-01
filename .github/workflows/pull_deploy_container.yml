@@ -34,16 +34,15 @@ jobs:
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG 
-  
+        
+    - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
     - name: Get existing task definition and modify it
       id: get_task_definition
-      run: |
-        
+      run: |    
         aws ecs describe-task-definition --task-definition kh-service --query taskDefinition > task-definition.json
-        cat task-definition.json > task-definition.txt
-
-        jq '.taskDefinition.containerDefinitions[0].portMappings[0].hostPort = 9090' task-definition.json > modified-task-definition.json  
-        cat modified-task-definition.json >  modified-task-definition.txt 
+        jq '.containerDefinitions[0].portMappings[0].hostPort = 9090' task-definition.json > modified-task-definition.json          
 
     - name: Update task definition in ECS
       id: update-task-definition
