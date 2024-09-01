@@ -50,15 +50,15 @@ jobs:
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: task-definition.json
-        container-name: kh2-container
+        container-name: ecs-sample
         image: ${{ steps.build-image.outputs.image }}
 
     - name: Deploy to Amazon ECS
       uses: aws-actions/amazon-ecs-deploy-task-definition@v2
       with:
         task-definition: task-definition.json 
-        service: kh2-service
-        cluster: kh2-cluster
+        service: kh-service
+        cluster: kh-ecs
         wait-for-service-stability: true
 
 #jq '.containerDefinitions[0].portMappings[0].hostPort = 9090' task-definition.json > modified-task-definition.json    
