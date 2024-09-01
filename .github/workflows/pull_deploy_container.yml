@@ -35,14 +35,18 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG 
   
-    - name: Get existing task definition
+    - name: Get existing task definition and modify it
       id: get_task_definition
       run: |
-        aws ecs describe-task-definition --task-definition kh-service --query taskDefinition > task-definition.json
-        jq '.taskDefinition.containerDefinitions[0].portMappings[0].hostPort = 9090' task-definition.json > modified-task-definition.json       
+        
+        TASK_DEFINITION_JSON=$(aws ecs describe-task-definition --task-definition your-task-definition-family)
+        echo "task_definition_json=$TASK_DEFINITION_JSON" >> $GITHUB_OUTPUT
+        jq '.taskDefinition.containerDefinitions[0].portMappings[0].hostPort = 9090' task-definition.json > modified-task-definition.json  
+        aws ecs register-task-definition --cli-input-json file://modified-task-definition.json     
 
     - name: Update task definition in ECS
       id: update-task-definition
       run: |
         aws ecs register-task-definition --cli-input-json file://modified-task-definition.json
 
+#aws ecs describe-task-definition --task-definition kh-service --query taskDefinition > task-definition.json
