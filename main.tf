@@ -40,7 +40,7 @@ module "ecs" {
           port_mappings = [
             {
               name          = "ecs-sample"  #container name
-              containerPort = 9090
+              containerPort = 8080
               protocol      = "tcp"
             }
           ]
