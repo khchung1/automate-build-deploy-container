@@ -36,7 +36,7 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG 
         
     - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq
+      run: sudo apt-get update && sudo apt-get install -y jq
 
     - name: Get existing task definition and modify it
       id: get_task_definition
