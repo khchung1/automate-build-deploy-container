@@ -1,0 +1,53 @@
+{
+    "family": "kh-service",
+    "containerDefinitions": [
+        {
+            "name": "ecs-sample",
+            "image": "public.ecr.aws/u2q1a2y8/khchung/simple-node-app",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "ecs-sample",
+                    "containerPort": 8080,
+                    "hostPort": 8080,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "linuxParameters": {
+                "initProcessEnabled": false
+            },
+            "startTimeout": 30,
+            "stopTimeout": 120,
+            "user": "0",
+            "privileged": false,
+            "readonlyRootFilesystem": false,
+            "interactive": false,
+            "pseudoTerminal": false,
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/aws/ecs/kh-service/ecs-sample",
+                    "awslogs-region": "ap-southeast-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "systemControls": []
+        }
+    ],
+    "taskRoleArn": "arn:aws:iam::255945442255:role/kh-service-20240901065557343400000002",
+    "executionRoleArn": "arn:aws:iam::255945442255:role/kh-service-20240901065557343700000004",
+    "networkMode": "awsvpc",
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "512",
+    "memory": "1024",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    }
+}
